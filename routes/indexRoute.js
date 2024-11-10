@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 
 router.get("/admin", ensureAuthenticated, async (req, res) => {
   try{
-    console.log("v2",allsession2)
+    
 
 
     
@@ -56,17 +56,8 @@ router.get("/admin", ensureAuthenticated, async (req, res) => {
 
 
 
-router.get("/dashboard", ensureAuthenticated, (req, res,next) => {
-  console.log(req.sessionID)
-  console.log((!(req.sessionID in allsession2)))
-  if (!(req.sessionID in allsession2)){
-    allsession2[req.sessionID]={"id":req.user.id}
-    console.log("addusertoolist")
-  }
-  
-  console.log("Cookie connect.sid:", req.cookies['connect.sid']);  
-  console.log("Session ID from req.sessionID:", req.sessionID);
-next()
+router.get("/dashboard", ensureAuthenticated, (req, res) => {
+
 
   
   if(req.user.hasOwnProperty("provider") && req.user["provider"]=== "github" ){ 
@@ -78,7 +69,8 @@ next()
     data ={user: req.user}
   }
   res.render("dashboard", data);
-  console.log(data)
+  
+  
   
 });
 
