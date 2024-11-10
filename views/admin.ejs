@@ -8,9 +8,12 @@
 <body>
     <h1>Dashboard</h1>
 
-    <p>current active session: </p>
-    <p>session id: <%= sid %></p>
-    <p>user id : <%= userid %> </p>
+
+    <% for( let index = 0; index < session_detail["sessionID"].length; index++ ) { %>
+        <p>current active session: </p>
+        <p>session id:<%= session_detail["sessionID"][index] %> </p>
+        <p>user id :<%= session_detail["UserID"][index] %> </p>
+    <% } %>
 
     
     

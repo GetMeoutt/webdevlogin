@@ -1,29 +1,54 @@
 const express = require("express");
 const router = express.Router();
 const { ensureAuthenticated, isAdmin } = require("../middleware/checkAuth");
+const fs = require("fs/promises")
+const path = require("path");
+const { error } = require("console");
+
+
 
 router.get("/", (req, res) => {
   res.send("welcome");
 });
 
 
-// router.get("/admin", ensureAuthenticated, (req, res) => {
-//   req.sessionStore.all((err, sessions) => {
-//     if (err) {
-//       console.log("Error retrieving sessions:", err);
-//       return res.status(500).send("Error retrieving sessions");
-//     }
-//     console.log("All Sessions:", sessions);
-//     res.json(sessions); // Send sessions as JSON for testing
-//   });
-// });
+router.get("/admin", ensureAuthenticated, async (req, res) => {
+  try{
 
 
+    const session_detail={
+      sessionID:[],
+      UserID:[]
+      // session_detail.sessionID.push(path.basename(session,path.extname(session)))
 
-router.get("/test-session", (req, res) => {
-  req.session.test = "Hello, session!111";
-  res.send("Session set11!");
-});
+    }
+    const allSession = await fs.readdir("./sessions")
+    
+
+    await Promise.all(
+      allSession.map(async (session) => {
+        session_detail.sessionID.push(path.basename(session, path.extname(session)));
+        
+        const data = await fs.readFile(path.join("sessions", session), "utf8");
+        const sessionFile = JSON.parse(data);
+        session_detail.UserID.push(sessionFile.passport.user.id);  
+        console.log("here",Object.keys(sessionFile.passport.user.id))
+      })
+    );
+    
+    res.render("admin", { session_detail });
+
+
+  }
+  catch(err){
+    console.log(err)
+  }
+  
+  
+   
+})
+
+
 
 router.get("/dashboard", ensureAuthenticated, (req, res,next) => {
   // console.log(req.session)
@@ -31,9 +56,9 @@ router.get("/dashboard", ensureAuthenticated, (req, res,next) => {
   console.log("Session ID from req.sessionID:", req.sessionID);
 next()
   if(req.user.hasOwnProperty("provider") && req.user["provider"]=== "github" ){ //check if it from github
-    data = {user:{
-      name:req.user["username"]
-    }}
+    data = {user:
+      
+      {name:req.user["username"],}}
   }
   else{
     data ={user: req.user}
