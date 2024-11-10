@@ -23,17 +23,20 @@ app.use(express.static(path.join(__dirname, "public")));
 // );
 
 
+
+
+
 var fileStoreOptions = {};
-app.use(cookieParser()); 
-app.use(express.urlencoded())
-app.use(session({ 
-    secret: 'keyboard cat', 
-    cookie: { maxAge: 60000 },
-    store: new FileStore(fileStoreOptions),
-
-}))
-
-
+app.use(session({
+  store: new FileStore({
+    path: "./sessions",
+    ttl: 3600,                // 1-hour session expiration
+    reapInterval: 3600        // Cleanup interval for expired sessions
+  }),
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false
+}));
 
 
 const passport = require("./middleware/passport");

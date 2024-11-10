@@ -23,15 +23,18 @@ router.post(
 
 
 
-router.get("/logout", (req, res, next) => {
-  req.session.destroy(function (err) {
-    console.log(err)
+router.get('/logout', (req, res) => {
+  // Destroy the session on the server
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      return res.status(500).send("Error logging out");
+    }
 
-    res.redirect("/auth/login")
+    // Clear the session cookie on the client
+    res.clearCookie('connect.sid');  // Clear the cookie holding the session ID
+    res.redirect('/auth/login');     // Redirect to login page or home
   });
-
-
-
 });
 
 // router.get("/logout", (req, res, next) => {
