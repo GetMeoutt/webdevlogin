@@ -31,9 +31,9 @@ router.get('/logout', (req, res) => {
       return res.status(500).send("Error logging out");
     }
 
-    // Clear the session cookie on the client
-    res.clearCookie('connect.sid');  // Clear the cookie holding the session ID
-    res.redirect('/auth/login');     // Redirect to login page or home
+    
+    res.clearCookie('connect.sid'); 
+    res.redirect('/auth/login');     
   });
 });
 
@@ -59,7 +59,13 @@ router.get('/github/callback',
     res.redirect('/dashboard');
   });
 
+router.post("/deletesession",(req,res)=>{
+  console.log(req.body)
+  const destroysessionID = req.body.sessionId
 
+  req.sessionStore.destroy(  destroysessionID, function(data,error){});
+  res.redirect("/admin")
+})
 
 
 

@@ -9,11 +9,17 @@
     <h1>Dashboard</h1>
 
 
-    <% for( let index = 0; index < session_detail["sessionID"].length; index++ ) { %>
-        <p>current active session: </p>
-        <p>session id:<%= session_detail["sessionID"][index] %> </p>
-        <p>user id :<%= session_detail["UserID"][index] %> </p>
+    <% for(let index = 0; index < Object.keys(session_detail).length; index++) { %>
+        <p>Current active session: <%=  %></p>
+        <p>SessionID: <%= Object.keys(session_detail)[index] %></p>
+        <p>User ID: <%= session_detail[Object.keys(session_detail)[index]]["userid"] %></p>
+        <form action="/auth/deletesession"method="POST">
+            <input type="hidden" name="sessionId" value="<%= Object.keys(session_detail)[index] %>">
+            <button type="submit" class="btn btn-primary btn-block">remove from session</button>
+        </form>
     <% } %>
+    <p><%= session_detail["session_detail"] %></p>
+    
 
     
     
