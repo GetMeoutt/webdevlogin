@@ -25,9 +25,11 @@ router.get("/test-session", (req, res) => {
   res.send("Session set11!");
 });
 
-router.get("/dashboard", ensureAuthenticated, (req, res) => {
+router.get("/dashboard", ensureAuthenticated, (req, res,next) => {
   // console.log(req.session)
-
+  console.log("Cookie connect.sid:", req.cookies['connect.sid']);  // Logs the cookie value
+  console.log("Session ID from req.sessionID:", req.sessionID);
+next()
   if(req.user.hasOwnProperty("provider") && req.user["provider"]=== "github" ){ //check if it from github
     data = {user:{
       name:req.user["username"]

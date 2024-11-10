@@ -4,33 +4,34 @@ const session = require("express-session");
 const path = require("path");
 const port = process.env.port || 8000;
 var FileStore = require('session-file-store')(session);
+const cookieParser = require('cookie-parser');
 const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
-app.use(
-  session({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: false,
-      maxAge: 60000,
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret: "secret",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       httpOnly: true,
+//       secure: false,
+//       maxAge: 60000,
+//     },
+//   })
+// );
 
 
 var fileStoreOptions = {};
- 
+app.use(cookieParser()); 
 app.use(express.urlencoded())
-// app.use(session({ 
-//     secret: 'keyboard cat', 
-//     cookie: { maxAge: 50000 },
-//     store: new FileStore(fileStoreOptions),
+app.use(session({ 
+    secret: 'keyboard cat', 
+    cookie: { maxAge: 60000 },
+    store: new FileStore(fileStoreOptions),
 
-// }))
+}))
 
 
 
