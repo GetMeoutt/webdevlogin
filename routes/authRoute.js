@@ -11,8 +11,8 @@ router.post(
   "/login",
   passport.authenticate("local", { failureRedirect: "/auth/login"}),
   (req,res)=>{
-  
-    if (req.user["id"] === 0){
+    
+    if (req.user.role === "admin" ){
       res.redirect("/admin")
     }
     else{
@@ -48,7 +48,7 @@ router.get('/logout', (req, res) => {
 // });
 
 router.get('/github',
-  passport.authenticate('github',{ prompt: "login" }));
+  passport.authenticate('github',));
 
 router.get('/github/callback', 
   
@@ -57,11 +57,10 @@ router.get('/github/callback',
     
 
     res.redirect('/dashboard');
-  });
+});
 
 router.post("/deletesession",(req,res)=>{
-  console.log("here",req.body.sessionId)
-  console.log(req.sessionID)
+ 
   const destroysessionID = req.body.sessionId
 
   req.sessionStore.destroy(  destroysessionID, function(data,error){});
