@@ -8,17 +8,17 @@
 <body>
     <h1>Dashboard</h1>
 
-
-    <% for(let index = 0; index < Object.keys(session_detail).length; index++) { %>
-        <p>Current active session: <%=  %></p>
-        <p>SessionID: <%= Object.keys(session_detail)[index] %></p>
-        <p>User ID: <%= session_detail[Object.keys(session_detail)[index]]["userid"] %></p>
-        <form action="/auth/deletesession"method="POST">
-            <input type="hidden" name="sessionId" value="<%= Object.keys(session_detail)[index] %>">
-            <button type="submit" class="btn btn-primary btn-block">remove from session</button>
+    
+    <p>current online session:</p>
+    <% Object.entries(sessions).forEach(([SID,detail]) => { %>
+        <p>session ID : <%= SID %></p>
+        <p>userID : <%= detail.passport.user.id %></p>  
+        <form method="POST" action="/auth/deletesession">
+            <input type="hidden" value="<%= SID %>" name='sessionId'>
+            <button type="submit" class="btn btn-secondary">remove session</button>
         </form>
-    <% } %>
-    <p><%= session_detail["session_detail"] %></p>
+     
+    <% }) %>
     
 
     

@@ -10,34 +10,30 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")));
-// app.use(
-//   session({
-//     secret: "secret",
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//       httpOnly: true,
-//       secure: false,
-//       maxAge: 60000,
-//     },
-//   })
-// );
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge: 300000,
+    },
+  })
+);
 
-
-
-
-
-var fileStoreOptions = {};
-app.use(session({
-  store: new FileStore({
-    path: "./sessions",
-    ttl: 3600,                // 1-hour session expiration
-    reapInterval: 3600        // Cleanup interval for expired sessions
-  }),
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: false
-}));
+// var fileStoreOptions = {};
+// app.use(session({
+//   store: new FileStore({
+//     path: "./sessions",
+//     ttl: 3600,               
+//     reapInterval: 3600       
+//   }),
+//   secret: 'your-secret-key',
+//   resave: false,
+//   saveUninitialized: false
+// }));
 
 
 const passport = require("./middleware/passport");

@@ -24,7 +24,7 @@ router.post(
 
 
 router.get('/logout', (req, res) => {
-  // Destroy the session on the server
+  
   req.session.destroy((err) => {
     if (err) {
       console.error("Error destroying session:", err);
@@ -60,11 +60,13 @@ router.get('/github/callback',
   });
 
 router.post("/deletesession",(req,res)=>{
-  console.log(req.body)
+  console.log("here",req.body.sessionId)
+  console.log(req.sessionID)
   const destroysessionID = req.body.sessionId
 
   req.sessionStore.destroy(  destroysessionID, function(data,error){});
   res.redirect("/admin")
+  
 })
 
 
